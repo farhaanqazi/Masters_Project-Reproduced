@@ -1,0 +1,114 @@
+{
+    "DecisionTree": {
+        "Accuracy": 1.0,
+        "Accuracy_95CI": [
+            1.0,
+            1.0
+        ],
+        "Precision": 1.0,
+        "Sensitivity (Recall)": 1.0,
+        "AUC": 1.0,
+        "AUC_95CI": [
+            1.0,
+            1.0
+        ],
+        "Fairness_Dominant_0_Acc": 1.0,
+        "Fairness_Dominant_1_Acc": 1.0
+    },
+    "KNN": {
+        "Accuracy": 0.8,
+        "Accuracy_95CI": [
+            0.6923076923076923,
+            0.8923076923076924
+        ],
+        "Precision": 0.8478260869565217,
+        "Sensitivity (Recall)": 0.8666666666666667,
+        "AUC": 0.9166666666666667,
+        "AUC_95CI": [
+            0.8354437229437229,
+            0.974496237889095
+        ],
+        "Fairness_Dominant_0_Acc": 0.8333333333333334,
+        "Fairness_Dominant_1_Acc": 0.7586206896551724
+    },
+    "LogisticRegression": {
+        "Accuracy": 0.9846153846153847,
+        "Accuracy_95CI": [
+            0.9538461538461539,
+            1.0
+        ],
+        "Precision": 1.0,
+        "Sensitivity (Recall)": 0.9777777777777777,
+        "AUC": 1.0,
+        "AUC_95CI": [
+            1.0,
+            1.0
+        ],
+        "Fairness_Dominant_0_Acc": 0.9722222222222222,
+        "Fairness_Dominant_1_Acc": 1.0
+    },
+    "MLP": {
+        "Accuracy": 1.0,
+        "Accuracy_95CI": [
+            1.0,
+            1.0
+        ],
+        "Precision": 1.0,
+        "Sensitivity (Recall)": 1.0,
+        "AUC": 1.0,
+        "AUC_95CI": [
+            0.9999999999999999,
+            1.0
+        ],
+        "Fairness_Dominant_0_Acc": 1.0,
+        "Fairness_Dominant_1_Acc": 1.0
+    },
+    "RandomForest": {
+        "Accuracy": 1.0,
+        "Accuracy_95CI": [
+            1.0,
+            1.0
+        ],
+        "Precision": 1.0,
+        "Sensitivity (Recall)": 1.0,
+        "AUC": 1.0,
+        "AUC_95CI": [
+            1.0,
+            1.0
+        ],
+        "Fairness_Dominant_0_Acc": 1.0,
+        "Fairness_Dominant_1_Acc": 1.0
+    },
+    "SVC": {
+        "Accuracy": 1.0,
+        "Accuracy_95CI": [
+            1.0,
+            1.0
+        ],
+        "Precision": 1.0,
+        "Sensitivity (Recall)": 1.0,
+        "AUC": 1.0,
+        "AUC_95CI": [
+            0.9999999999999999,
+            1.0
+        ],
+        "Fairness_Dominant_0_Acc": 1.0,
+        "Fairness_Dominant_1_Acc": 1.0
+    },
+    "XGBoost": {
+        "Accuracy": 1.0,
+        "Accuracy_95CI": [
+            1.0,
+            1.0
+        ],
+        "Precision": 1.0,
+        "Sensitivity (Recall)": 1.0,
+        "AUC": 1.0,
+        "AUC_95CI": [
+            1.0,
+            1.0
+        ],
+        "Fairness_Dominant_0_Acc": 1.0,
+        "Fairness_Dominant_1_Acc": 1.0
+    }
+}

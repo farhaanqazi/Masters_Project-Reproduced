@@ -1,0 +1,8 @@
+Model,Accuracy,Precision,Sensitivity (Recall),AUC
+DecisionTree,1.0,1.0,1.0,1.0
+KNN,0.8,0.8478260869565217,0.8666666666666667,0.9166666666666667
+LogisticRegression,0.9846153846153847,1.0,0.9777777777777777,1.0
+MLP,1.0,1.0,1.0,1.0
+RandomForest,1.0,1.0,1.0,1.0
+SVC,1.0,1.0,1.0,1.0
+XGBoost,1.0,1.0,1.0,1.0

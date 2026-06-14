@@ -1,0 +1,9 @@
+Comparison of ML techniques applied to Parkinsons Dataset ,,,,,,,,
+Model,Cross-validation accuracy,Model Accuracy,Training Accuracy,Testing Accuracy,Precision,Sensitivity,Specificity,AUC
+DecisionTreeClassifier(),0.6654,0.7538,0.9731,0.7538,0.766,0.878,0.5417,0.75
+MLPClassifier(),0.7077,0.6769,0.9885,0.6769,0.7083,0.8293,0.4167,0.79
+KNeighborsClassifier(),0.7231,0.7231,0.7731,0.7231,0.717,0.9268,0.375,0.79
+LogisticRegression() ,0.7385,0.7231,0.7346,0.7231,0.7091,0.9512,0.3333,0.75
+SVC() ,0.7423,0.7231,0.7692,0.7231,0.7018,0.9756,0.2917,0.68
+RandomForestClassifier() ,0.7692,0.7538,1,0.7538,0.7551,0.9024,0.5,0.77
+RandomForestClassifier() and PSO,0.6862,0.6308,0.7,0.6308,0.6308,1,0,0.47
