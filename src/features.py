@@ -16,8 +16,8 @@ def process_features_and_split(seed=42):
         
     df = pd.read_csv(PROCESSED_DATA_PATH)
     
-    # Target column is 'PC'
-    X = df.drop(columns=['ID', 'PC'])
+    # Target column is 'PC', also drop 'ID' and the leaked 'Duration' feature
+    X = df.drop(columns=['ID', 'PC', 'Duration'])
     y = df['PC']
     
     # Robust 80/20 train/test split, stratified by target to handle imbalance

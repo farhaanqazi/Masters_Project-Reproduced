@@ -1,114 +1,114 @@
 {
     "DecisionTree": {
-        "Accuracy": 1.0,
+        "Accuracy": 0.7538461538461538,
         "Accuracy_95CI": [
-            1.0,
-            1.0
+            0.6461538461538462,
+            0.8615384615384616
         ],
-        "Precision": 1.0,
-        "Sensitivity (Recall)": 1.0,
-        "AUC": 1.0,
+        "Precision": 0.8536585365853658,
+        "Sensitivity (Recall)": 0.7777777777777778,
+        "AUC": 0.7466666666666667,
         "AUC_95CI": [
-            1.0,
-            1.0
+            0.6254359659413191,
+            0.8720945279021619
         ],
-        "Fairness_Dominant_0_Acc": 1.0,
-        "Fairness_Dominant_1_Acc": 1.0
+        "Fairness_Dominant_0_Acc": 0.7777777777777778,
+        "Fairness_Dominant_1_Acc": 0.7241379310344828
     },
     "KNN": {
-        "Accuracy": 0.8,
+        "Accuracy": 0.6615384615384615,
         "Accuracy_95CI": [
-            0.6923076923076923,
-            0.8923076923076924
+            0.5384615384615384,
+            0.7692307692307693
         ],
-        "Precision": 0.8478260869565217,
-        "Sensitivity (Recall)": 0.8666666666666667,
-        "AUC": 0.9166666666666667,
+        "Precision": 0.7346938775510204,
+        "Sensitivity (Recall)": 0.8,
+        "AUC": 0.5883333333333334,
         "AUC_95CI": [
-            0.8354437229437229,
-            0.974496237889095
+            0.4377287784679089,
+            0.736125493096647
         ],
-        "Fairness_Dominant_0_Acc": 0.8333333333333334,
-        "Fairness_Dominant_1_Acc": 0.7586206896551724
+        "Fairness_Dominant_0_Acc": 0.7222222222222222,
+        "Fairness_Dominant_1_Acc": 0.5862068965517241
     },
     "LogisticRegression": {
-        "Accuracy": 0.9846153846153847,
+        "Accuracy": 0.6923076923076923,
         "Accuracy_95CI": [
-            0.9538461538461539,
-            1.0
+            0.5692307692307692,
+            0.8
         ],
-        "Precision": 1.0,
-        "Sensitivity (Recall)": 0.9777777777777777,
-        "AUC": 1.0,
+        "Precision": 0.7272727272727273,
+        "Sensitivity (Recall)": 0.8888888888888888,
+        "AUC": 0.7977777777777778,
         "AUC_95CI": [
-            1.0,
-            1.0
+            0.6746504901960784,
+            0.9033338264299804
         ],
-        "Fairness_Dominant_0_Acc": 0.9722222222222222,
-        "Fairness_Dominant_1_Acc": 1.0
+        "Fairness_Dominant_0_Acc": 0.7777777777777778,
+        "Fairness_Dominant_1_Acc": 0.5862068965517241
     },
     "MLP": {
-        "Accuracy": 1.0,
+        "Accuracy": 0.6461538461538462,
         "Accuracy_95CI": [
-            1.0,
-            1.0
+            0.5380769230769231,
+            0.7542307692307688
         ],
-        "Precision": 1.0,
-        "Sensitivity (Recall)": 1.0,
-        "AUC": 1.0,
+        "Precision": 0.7391304347826086,
+        "Sensitivity (Recall)": 0.7555555555555555,
+        "AUC": 0.7155555555555555,
         "AUC_95CI": [
-            0.9999999999999999,
-            1.0
+            0.5800844155844156,
+            0.8382615546218487
         ],
-        "Fairness_Dominant_0_Acc": 1.0,
-        "Fairness_Dominant_1_Acc": 1.0
+        "Fairness_Dominant_0_Acc": 0.6944444444444444,
+        "Fairness_Dominant_1_Acc": 0.5862068965517241
     },
     "RandomForest": {
-        "Accuracy": 1.0,
+        "Accuracy": 0.8307692307692308,
         "Accuracy_95CI": [
-            1.0,
-            1.0
+            0.7384615384615385,
+            0.9076923076923077
         ],
-        "Precision": 1.0,
-        "Sensitivity (Recall)": 1.0,
-        "AUC": 1.0,
+        "Precision": 0.84,
+        "Sensitivity (Recall)": 0.9333333333333333,
+        "AUC": 0.7877777777777777,
         "AUC_95CI": [
-            1.0,
-            1.0
+            0.6464382343846629,
+            0.9156591463414633
         ],
-        "Fairness_Dominant_0_Acc": 1.0,
-        "Fairness_Dominant_1_Acc": 1.0
+        "Fairness_Dominant_0_Acc": 0.8888888888888888,
+        "Fairness_Dominant_1_Acc": 0.7586206896551724
     },
     "SVC": {
-        "Accuracy": 1.0,
+        "Accuracy": 0.676923076923077,
         "Accuracy_95CI": [
-            1.0,
-            1.0
+            0.5692307692307692,
+            0.7846153846153846
         ],
-        "Precision": 1.0,
-        "Sensitivity (Recall)": 1.0,
-        "AUC": 1.0,
+        "Precision": 0.7307692307692307,
+        "Sensitivity (Recall)": 0.8444444444444444,
+        "AUC": 0.6577777777777777,
         "AUC_95CI": [
-            0.9999999999999999,
-            1.0
+            0.5151159767006449,
+            0.7843734931938725
         ],
-        "Fairness_Dominant_0_Acc": 1.0,
-        "Fairness_Dominant_1_Acc": 1.0
+        "Fairness_Dominant_0_Acc": 0.7777777777777778,
+        "Fairness_Dominant_1_Acc": 0.5517241379310345
     },
     "XGBoost": {
-        "Accuracy": 1.0,
+        "Accuracy": 0.7538461538461538,
         "Accuracy_95CI": [
-            1.0,
-            1.0
+            0.6461538461538462,
+            0.8461538461538461
         ],
-        "Precision": 1.0,
-        "Sensitivity (Recall)": 1.0,
-        "AUC": 1.0,
+        "Precision": 0.7735849056603774,
+        "Sensitivity (Recall)": 0.9111111111111111,
+        "AUC": 0.7622222222222222,
         "AUC_95CI": [
-            1.0,
-            1.0
+            0.6179624580225268,
+            0.8928755312193528
         ],
-        "Fairness_Dominant_0_Acc": 1.0,
-        "Fairness_Dominant_1_Acc": 1.0
+        "Fairness_Dominant_0_Acc": 0.8055555555555556,
+        "Fairness_Dominant_1_Acc": 0.6896551724137931
     }
 }
