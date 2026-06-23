@@ -17,22 +17,35 @@ All positive cases use **organic leaks already present in published datasets**. 
 
 1. **Parkinson's Disease (primary — already in repo: `data/raw/dataset.csv`)**
    - Target: `PC`. Leaky feature: `Duration`.
-   - Leak type: **within-class degeneracy** — `Duration = 0.0` for every Healthy Control (zero variance in class 0). Caught by the detector's hard degeneracy flag.
+   - Leak type: **within-class degeneracy** — `Duration = 0.0` for every Healthy Control (zero variance in class 0). Caught by the detector's hard degeneracy flag. This is the only *hard-flag* case in the suite.
 
-2. **Heart Failure Clinical Records (download → `data/external/heart_failure_clinical_records_dataset.csv`)**
-   - Source: UCI ML Repository (ID 519) / Chicco & Jurman 2020; also mirrored on Kaggle.
-   - 299 rows, 13 columns. Target: `DEATH_EVENT`. Leaky feature: `time` (the follow-up observation period).
-   - Leak type: **extreme univariate correlation** — `time` is a documented leak (patients' follow-up window correlates strongly with the death outcome). It is continuous, so it is *not* degenerate; the detector surfaces it as a top-ranked suspicious feature for human review. This is the direct analogue of the Parkinson's `Duration` bug — an observation-time column leaking a medical outcome.
+2. **Bank Marketing (download → `data/external/bank-marketing.csv`)**
+   - Source: UCI ML Repository (ID 222). File: `bank-additional-full.csv` or `bank-full.csv`.
+   - Target: `y` (yes/no → encode 0/1). Leaky feature: `duration` (last-contact call length).
+   - Leak type: **extreme univariate correlation**, *documented by the data providers themselves* — the UCI page states `duration` should be discarded for any realistic model (e.g. `duration=0` ⇒ `y='no'`). Strongest "real-world proof": cite the provider's own warning.
 
-3. **Cervical Cancer (Risk Factors) (download → `data/external/risk_factors_cervical_cancer.csv`)**
-   - Source: UCI ML Repository (ID 383).
-   - 858 rows, 36 columns; contains `?` missing values requiring cleaning. Target: `Biopsy`. Leaky features: `Hinselmann`, `Schiller`, `Citology`.
-   - Leak type: **target leakage / extreme correlation** — those three columns are alternative diagnostic tests for the same outcome and are only available at/after diagnosis. They leak `Biopsy` and the detector ranks them at the top.
+3. **Rain in Australia (download → `data/external/weatherAUS.csv`)**
+   - Source: Kaggle "Rain in Australia" (`weatherAUS.csv`).
+   - Target: `RainTomorrow` (Yes/No). Leaky feature: `RISK_MM` (mm of rain the *next* day — i.e. the answer itself).
+   - Leak type: **extreme univariate / target leakage**, documented in the dataset description (drop `RISK_MM`).
 
-### Negative control (clean, no download — ships with scikit-learn)
+4. **Heart Failure Clinical Records (download → `data/external/heart_failure.csv`)**
+   - Source: UCI ML Repository (ID 519) / Chicco & Jurman 2020; also on Kaggle.
+   - 299 rows, 13 columns. Target: `DEATH_EVENT`. Leaky feature: `time` (follow-up observation window).
+   - Leak type: **extreme univariate correlation** — direct analogue of the Parkinson's `Duration` bug (an observation-time column leaking a medical outcome).
 
-4. **Breast Cancer Wisconsin (`sklearn.datasets.load_breast_cancer`)**
-   - Used only to prove **precision**: it contains legitimately strong clinical markers (e.g. `worst perimeter`, AUC > 0.97) that must rank high but **must NOT trigger the degeneracy hard-flag**. No leak, no injection — a real false-positive stress test.
+5. **Cervical Cancer (Risk Factors) (download → `data/external/cervical_cancer.csv`)**
+   - Source: UCI ML Repository (ID 383). Contains `?` missing values requiring cleaning.
+   - 858 rows, 36 columns. Target: `Biopsy`. Leaky features: `Hinselmann`, `Schiller`, `Citology`.
+   - Leak type: **target leakage** — alternative diagnostic tests for the same outcome, only available at/after diagnosis.
+
+### Negative controls (clean, no leak — precision / false-positive tests)
+
+6. **Breast Cancer Wisconsin (`sklearn.datasets.load_breast_cancer` — no download)**
+   - Proves **precision**: legitimately strong clinical markers (e.g. `worst perimeter`, AUC > 0.97) must rank high but **must NOT trigger the degeneracy hard-flag**.
+
+7. **Pima Indians Diabetes (optional download → `data/external/pima-diabetes.csv`)**
+   - Edge case: misleading physiological zeros (glucose/BMI = 0 means *missing*, not degenerate). Confirms the detector does not over-flag zero-heavy columns as leaks.
 
 ## Proposed Changes
 

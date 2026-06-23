@@ -37,7 +37,7 @@ See [DATA.md](docs/DATA.md) and [DATASHEET.md](docs/DATASHEET.md) for details on
 ## 📁 Repository Structure
 
 ```text
-parkinsons-ml-repro/
+tabular-leakage-detector/
 ├── README.md                  # overview + methodology + validation results
 ├── LICENSE                    # MIT
 ├── requirements.txt           # dependencies
@@ -46,55 +46,89 @@ parkinsons-ml-repro/
 │   ├── DATA.md                # dataset source, version, access procedure
 │   ├── DATASHEET.md           # Gebru et al. datasheet for the dataset
 │   ├── MODEL_CARD.md          # Mitchell et al. model card
-│   ├── TRIPOD-AI_checklist.md # Layer B clinical reporting
-│   └── REPRODUCIBILITY.md     # Layer A reproducibility 
+│   ├── TRIPOD-AI_checklist.md # clinical reporting (Parkinson's case study)
+│   └── REPRODUCIBILITY.md     # reproducibility checklist
 ├── data/
-│   ├── raw/                   # gitignored, contains dataset.csv
-│   └── processed/             # cleaned features and labels
+│   ├── raw/                   # gitignored; primary Parkinson's dataset.csv
+│   ├── external/             # gitignored CSVs + download guide (README.md)
+│   └── processed/            # cleaned features and labels
 ├── splits/                    # saved train/val/test indices + the seed
 ├── src/
-│   ├── leakage_detector.py    # CORE: Standalone leakage detector class
-│   ├── validate_detector.py   # CORE: Cross-dataset validation suite
+│   ├── leakage_detector.py    # CORE: standalone leakage detector class
+│   ├── validate_detector.py   # CORE: cross-dataset leak-impact suite
 │   ├── utils.py               # set_seed() for numpy / framework / split
 │   ├── data_prep.py           # data exclusions and cleaning
 │   ├── features.py            # standardization and explicit dataset splits
 │   ├── train.py               # grid search and model saving
 │   └── evaluate.py            # fairness, CIs, and metrics evaluation
 ├── models/                    # saved weights (.pkl)
-├── results/                   # metrics.json, feature importances
-└── notebooks/                 # original thesis notebooks
+├── results/                   # metrics.json, leak_impact.json, charts
+└── notebooks/
+    ├── hotel_booking_leakage.ipynb   # rigorous per-dataset case study (gold template)
+    ├── Masters_Project_F21MP.ipynb   # original thesis: main analysis + EDA
+    ├── Outcome_Visualisation.ipynb   # original thesis: result visualisations
+    ├── Comparison.csv                 # original thesis: model comparison
+    └── *.ipynb                        # original thesis per-model notebooks:
+                                       #   Decision_Trees, Random_Forest, Random_Forest_+_PSO,
+                                       #   SVM, KNN, Logistic_Regression, MLP
 ```
 
 ## 🚀 Exact Reproduction Commands
-
-We provide a testing suite to validate the leakage detector across multiple datasets and evaluate its Precision-Recall curve.
 
 ```bash
 # 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Run the cross-dataset validation suite
+# 2. Download the external validation datasets into data/external/
+#    (filenames, sources, and known leaks listed in data/external/README.md)
+
+# 3. Run the cross-dataset leak-impact suite (uniform baseline models)
 python -m src.validate_detector
 ```
 
-*(Optional) The original ML reproduction pipeline can still be run via `python src/train.py`.*
+Two layers of evidence:
+- **`src/validate_detector.py`** — fast, uniform-baseline sweep across all datasets (the summary tables below).
+- **`notebooks/`** — full, rigorous per-dataset case studies (preprocessing, feature engineering, 7 tuned models, CIs) that *independently rediscover* each leak, then cross-check the detector. See [notebooks/hotel_booking_leakage.ipynb](notebooks/hotel_booking_leakage.ipynb) for the worked template.
 
-## 📈 1. Validation Results: Catching Data Leakage
+*(Optional) The original Parkinson's ML reproduction pipeline can still be run via `python src/train.py`.*
 
-### The Regression Case: Parkinson's Dataset
-Initially, a Decision Tree achieved 1.0 accuracy on the PD dataset using a single split: `Duration > 0.0`. It was discovered that all Healthy Controls had a test duration of exactly `0.0`. The `DataLeakageDetector` successfully re-catches this issue automatically by flagging `Duration` with its **within-class degeneracy flag**, identifying the zero-variance pathology without human intervention.
+## 📈 Validation Results: Catching Real Leaks Across 5 Datasets
 
-### Precision Tests: Breast Cancer & Legitimate Predictiveness
-A significant challenge for leakage detection is avoiding false-positives on highly predictive, legitimate features. When evaluated against Breast Cancer Wisconsin (where legitimate features like `worst perimeter` achieve `>0.97` AUC), the detector **correctly passes** the data without triggering degeneracy flags.
+The detector is validated on **five real-world datasets that contain organic, documented leaks** — nothing is injected or fabricated. For each, the detector flags the leaky column(s), then we quantify the leak's damage by training models **with** vs **without** the leak on identical splits (`python -m src.validate_detector`).
 
-### Recall Tests: Subtly Injected Proxy Leaks
-When injecting synthetic leaks (e.g. noisy proxies of the target) into clean datasets, the tool successfully ranks them near the top. However, because highly correlated proxy leaks are mathematically indistinguishable from legitimate high-AUC clinical markers, the PR curve behaves as expected:
-- The detector successfully isolates degeneracy leaks (perfect precision).
-- For pure correlation proxies, it highlights them as "suspicious" for human review. It does not attempt to falsely automate the separation between a strong true predictor and a correlated leak.
+### Detection: every real leak was flagged
 
-## 🛠️ 3. The Correction & Honest Evaluation
+| Dataset | Target | Leaky column(s) | How it was caught |
+|---|---|---|---|
+| Parkinson's Disease | `PC` | `Duration` | **Hard degeneracy flag** (`Duration=0` for all controls) |
+| Hotel Booking Demand | `is_canceled` | `reservation_status` | **Hard degeneracy flag** (constant within the not-cancelled class) |
+| Bank Marketing | `y` | `duration` | Top-ranked suspicious (#1, AUC 0.93) — *provider-documented leak* |
+| Heart Failure | `DEATH_EVENT` | `time` | Top-ranked suspicious (#1, AUC 0.84) |
+| Cervical Cancer | `Biopsy` | `Schiller`, `Hinselmann`, `Citology` | Top-ranked suspicious (#1/#2/#3) |
 
-To properly reproduce the clinical value of the spatial-temporal features (Velocity, Acceleration, AreaError, etc.), the leaked `Duration` column was explicitly dropped from the feature set. The pipeline was re-run, yielding the following true performance metrics:
+### Impact: what each leak does to a model (Random Forest)
+
+| Dataset | Leak type | Acc (with leak) | Acc (removed) | AUC (with leak) | AUC (removed) |
+|---|---|---|---|---|---|
+| Parkinson's Disease | within-class degeneracy | 1.000 | 0.800 | 1.000 | 0.807 |
+| Bank Marketing | correlation (provider-documented) | 0.906 | 0.891 | 0.925 | 0.789 |
+| Heart Failure | correlation (observation window) | 0.833 | 0.700 | 0.891 | 0.797 |
+| Cervical Cancer | target leakage (alternate diagnoses) | 0.954 | 0.936 | 0.971 | 0.693 |
+| Hotel Booking Demand | target leakage (label restated) | 1.000 | 0.894 | 1.000 | 0.959 |
+
+*(Uniform default models are used here for cross-dataset comparability. Full, rigorously tuned per-dataset development — 7 models, grid search, CIs — lives in [`notebooks/`](notebooks/); e.g. the Hotel Booking case study independently rediscovers the leak before the detector confirms it.)*
+
+**Key finding — AUC exposes leaks that accuracy hides.** On Cervical Cancer, removing the leak barely moves accuracy (0.954 → 0.936) because the dataset is imbalanced, yet **AUC collapses from 0.971 to 0.693**. A team watching only accuracy would never notice the leak. This is the central argument for a dedicated pre-training audit.
+
+### Precision controls (clean data — no false alarms)
+- **Breast Cancer Wisconsin:** legitimately strong features (`worst perimeter`, AUC > 0.97) rank high but trigger **zero** degeneracy hard-flags. ✅
+
+### Honest scope: decision-support, not auto-deletion
+The detector outputs a **ranked list for human review**, not automated verdicts — deliberately. On Hotel Booking the degeneracy flag also fired on `required_car_parking_spaces` (a genuine within-class degeneracy, but AUC only 0.55 — *not* a meaningful leak). Combined with its low predictiveness, a human dismisses it in seconds. The tool surfaces candidates; the analyst decides. It does **not** catch temporal, train/test-contamination, or multivariate leakage.
+
+## 🛠️ Primary Case Study: Parkinson's Honest Evaluation
+
+The Parkinson's dataset is the deep-dive case study (full grid-search across 7 models with confidence intervals). To recover the true clinical value of the spatial-temporal features (Velocity, Acceleration, AreaError, etc.), the leaked `Duration` column was dropped and the tuned pipeline re-run, yielding:
 
 | Model | Accuracy | Accuracy (95% CI) | Precision | Sensitivity | AUC (95% CI) |
 |-------|----------|-------------------|-----------|-------------|--------------|
@@ -108,7 +142,7 @@ To properly reproduce the clinical value of the spatial-temporal features (Veloc
 
 ### 📊 Final Synthesis: Before & After Data Leak Correction
 
-This table directly compares the artificial metrics generated by the `Duration` leak against the honest biomechanical baseline:
+**Provenance note:** the original 2023 thesis never reported these perfect scores — it reported ~72–76% accuracy and concluded that separating healthy controls is hard. The **"Honest" column reproduces that thesis result** (~75–83%). The **"Leaked" column is what a *naive* model produces if `Duration` is included** — a latent trap in the raw data that this project surfaced, not a number the thesis claimed. This table quantifies that trap:
 
 | Model | Accuracy (Leaked) | Accuracy (Honest) | Accuracy Diff | AUC (Leaked) | AUC (Honest) |
 |-------|-------------------|-------------------|---------------|--------------|--------------|

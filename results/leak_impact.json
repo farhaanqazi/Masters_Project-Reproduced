@@ -1,0 +1,239 @@
+{
+  "impact": [
+    {
+      "name": "Parkinson's Disease",
+      "leak_cols": [
+        "Duration"
+      ],
+      "leak_kind": "within-class degeneracy (organic)",
+      "detected": {
+        "Duration": {
+          "rank": 1,
+          "degenerate_flag": true,
+          "auc": 1.0
+        }
+      },
+      "before": {
+        "RandomForest": {
+          "acc": 1.0,
+          "auc": 1.0
+        },
+        "LogReg": {
+          "acc": 0.9846,
+          "auc": 1.0
+        },
+        "DecisionTree": {
+          "acc": 1.0,
+          "auc": 1.0
+        }
+      },
+      "after": {
+        "RandomForest": {
+          "acc": 0.8,
+          "auc": 0.8067
+        },
+        "LogReg": {
+          "acc": 0.6923,
+          "auc": 0.7978
+        },
+        "DecisionTree": {
+          "acc": 0.7846,
+          "auc": 0.7611
+        }
+      }
+    },
+    {
+      "name": "Bank Marketing",
+      "leak_cols": [
+        "duration"
+      ],
+      "leak_kind": "correlation (provider-documented)",
+      "detected": {
+        "duration": {
+          "rank": 1,
+          "degenerate_flag": false,
+          "auc": 0.8076
+        }
+      },
+      "before": {
+        "RandomForest": {
+          "acc": 0.9063,
+          "auc": 0.9246
+        },
+        "LogReg": {
+          "acc": 0.8914,
+          "auc": 0.8726
+        },
+        "DecisionTree": {
+          "acc": 0.8769,
+          "auc": 0.7044
+        }
+      },
+      "after": {
+        "RandomForest": {
+          "acc": 0.8911,
+          "auc": 0.7888
+        },
+        "LogReg": {
+          "acc": 0.8833,
+          "auc": 0.7329
+        },
+        "DecisionTree": {
+          "acc": 0.8262,
+          "auc": 0.6109
+        }
+      }
+    },
+    {
+      "name": "Heart Failure Clinical Records",
+      "leak_cols": [
+        "time"
+      ],
+      "leak_kind": "correlation (observation window)",
+      "detected": {
+        "time": {
+          "rank": 1,
+          "degenerate_flag": false,
+          "auc": 0.8358
+        }
+      },
+      "before": {
+        "RandomForest": {
+          "acc": 0.8333,
+          "auc": 0.8915
+        },
+        "LogReg": {
+          "acc": 0.8167,
+          "auc": 0.8588
+        },
+        "DecisionTree": {
+          "acc": 0.7333,
+          "auc": 0.6637
+        }
+      },
+      "after": {
+        "RandomForest": {
+          "acc": 0.7,
+          "auc": 0.7972
+        },
+        "LogReg": {
+          "acc": 0.7,
+          "auc": 0.7445
+        },
+        "DecisionTree": {
+          "acc": 0.7167,
+          "auc": 0.6374
+        }
+      }
+    },
+    {
+      "name": "Cervical Cancer (Risk Factors)",
+      "leak_cols": [
+        "Hinselmann",
+        "Schiller",
+        "Citology"
+      ],
+      "leak_kind": "target leakage (alternate diagnoses)",
+      "detected": {
+        "Hinselmann": {
+          "rank": 2,
+          "degenerate_flag": false,
+          "auc": 0.721
+        },
+        "Schiller": {
+          "rank": 1,
+          "degenerate_flag": false,
+          "auc": 0.9202
+        },
+        "Citology": {
+          "rank": 3,
+          "degenerate_flag": false,
+          "auc": 0.6474
+        }
+      },
+      "before": {
+        "RandomForest": {
+          "acc": 0.9535,
+          "auc": 0.9712
+        },
+        "LogReg": {
+          "acc": 0.9593,
+          "auc": 0.9593
+        },
+        "DecisionTree": {
+          "acc": 0.9477,
+          "auc": 0.7603
+        }
+      },
+      "after": {
+        "RandomForest": {
+          "acc": 0.936,
+          "auc": 0.6934
+        },
+        "LogReg": {
+          "acc": 0.9244,
+          "auc": 0.5375
+        },
+        "DecisionTree": {
+          "acc": 0.8779,
+          "auc": 0.5511
+        }
+      }
+    },
+    {
+      "name": "Hotel Booking Demand",
+      "leak_cols": [
+        "reservation_status",
+        "reservation_status_date"
+      ],
+      "leak_kind": "target leakage (label restated)",
+      "detected": {
+        "reservation_status": {
+          "rank": 1,
+          "degenerate_flag": true,
+          "auc": 0.9727
+        },
+        "reservation_status_date": {
+          "rank": 8,
+          "degenerate_flag": false,
+          "auc": 0.5917
+        }
+      },
+      "before": {
+        "RandomForest": {
+          "acc": 0.9999,
+          "auc": 1.0
+        },
+        "LogReg": {
+          "acc": 0.9889,
+          "auc": 0.9742
+        },
+        "DecisionTree": {
+          "acc": 1.0,
+          "auc": 1.0
+        }
+      },
+      "after": {
+        "RandomForest": {
+          "acc": 0.8936,
+          "auc": 0.9591
+        },
+        "LogReg": {
+          "acc": 0.7939,
+          "auc": 0.864
+        },
+        "DecisionTree": {
+          "acc": 0.8551,
+          "auc": 0.8477
+        }
+      }
+    }
+  ],
+  "controls": [
+    {
+      "name": "Breast Cancer Wisconsin",
+      "n_degenerate_flags": 0,
+      "pass": true
+    }
+  ]
+}
